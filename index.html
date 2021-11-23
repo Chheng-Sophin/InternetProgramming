@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+        <script defer src="./assets/js/bootstrap.min.js"></script>
+        <script defer src="./assets/js/script.js"></script>
+        <link rel="stylesheet" href="./assets/css/style.css">
+        <title>Submit Your Profile</title>
+        <style>
+            table.table thead {
+                border-bottom: 3px solid #FFFF !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <h1>Tell us about yourself</h1>
+            </div>
+        </nav>
+        <div class="container">
+            <form action="" class="pb-3">
+                <div class="profile mt-2 pt-2">
+                    <h3>Profile information</h3>
+                    <div class="row ">
+                        <div class="col-6 select">
+                            <label for="Lastname">Last Name</label>
+                            <input type="text" id="Lastname" class="form-control" name="Lastname" placeholder="Last Name">
+                        </div>
+                        <div class="col-6 select">
+                            <label for="Firstname">First Name</label>
+                            <input type="text" id="Firstname" class="form-control" name="Firstname" placeholder="First Name">
+                        </div>
+                        <div class="col-6 select">
+                            <label for="Email">Email</label>
+                            <input type="text" id="Email" class="form-control" name="Email" placeholder="Email">
+                        </div>
+                        <div class="col-6 select">
+                            <label for="Phone">Phone</label>
+                            <input type="text" id="Phone" class="form-control" name="Phone" placeholder="Phone">
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="Gender">Gender</label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="radio" name="gender" id="male" value="male">
+                                    <label for="male">Male</label>
+                                    <input type="radio" name="gender" id="female" value="female">
+                                    <label for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="more">
+                    <div class="row mt-2 pt-2">
+                        <h3>Current Address</h3>
+                        <div class="col-4">
+                            <select name="province-city" id="provice" class="form-select" title="Province/City">
+                                <option selected disabled>Province/City</option>
+                                <optgroup label="Province">
+                                    <option value="province-1">Provice 1</option>
+                                    <option value="province-2">Provice 2</option>
+                                    <option value="province-3">Provice 3</option>
+                                </optgroup>
+                                <optgroup label="City">
+                                    <option value="city-1">City 1</option>
+                                    <option value="city-2">City 2</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="country" id="country" class="form-select" title="Country">
+                                <option selected disabled>Country</option>
+                                <option value="county-1">Country 1</option>
+                                <option value="county-2">Country 2</option>
+                                <option value="county-3">Country 3</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="postal" id="postal" placeholder="Post Code" autocomplete="off">
+                        </div>
+                        <div class="col-12 pt-4">
+                            <textarea class="form-control" id="address" placeholder="Address" autocomplete="off" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-2 pt-2">
+                        <div class="col-6">
+                            <h4>Skills</h4>
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="designing" id="designing" value="designing">
+                                    <label for="designing">Designing</label>
+                                </div>
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="database" id="database" value="database">
+                                    <label for="database">Database Managment</label>
+                                </div>
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="coding" id="coding" value="coding">
+                                    <label for="coding">Coding</label>
+                                </div>
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="debug" id="debug" value="debug">
+                                    <label for="debug">Debug</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <h4>Languages</h4>
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="english" id="english" value="english">
+                                    <label for="english">English</label>
+                                </div>
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="chinese" id="chinese" value="chinese">
+                                    <label for="chinese">Chinese</label>
+                                </div>
+                                <div class="col-6 col-md-6 col-sm-12 checkbox">
+                                    <input type="checkbox" name="franch" id="franch" value="franch">
+                                    <label for="franch">Franch</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 pt-2">
+                        <h3>Experiences</h3>
+                        <table class="table table-strip scrollable">
+                            <thead>
+                                <th width="60">From</th>
+                                <th width="60">To</th>
+                                <th width="120">Description</th>
+                            </thead>
+                            <tbody>
+                                <tr id="1">
+                                    <td><input type="text" class="form-control" id=1-1></td>
+                                    <td><input type="text" class="form-control" id=1-2></td>
+                                    <td><input type="text" class="form-control" id=1-3></td>
+                                </tr>
+                                <tr id="2">
+                                    <td><input type="text" class="form-control" id=2-1></td>
+                                    <td><input type="text" class="form-control" id=2-2></td>
+                                    <td><input type="text" class="form-control" id=2-3></td>
+                                </tr>
+                                <tr id="3">
+                                    <td><input type="text" class="form-control" id=3-1></td>
+                                    <td><input type="text" class="form-control" id=3-2></td>
+                                    <td><input type="text" class="form-control" id=3-3></td>
+                                </tr>
+                                <tr id="4">
+                                    <td><input type="text" class="form-control" id=4-1></td>
+                                    <td><input type="text" class="form-control" id=4-2></td>
+                                    <td><input type="text" class="form-control" id=4-3></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row mt-2 pt-2">
+                        <h3>Choose your profile photo</h3>
+                        <div class="col-auto">
+                            <input type="file" class="form-control image image-upload" accept="image/jpeg">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </body>
+
+</html>
