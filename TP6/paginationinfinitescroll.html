@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "icon" href = 
+"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Emoji_u2708.svg/2048px-Emoji_u2708.svg.png" 
+        type = "image/x-icon">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>Pagination</title>
+  <style>
+    .main{
+      width: 100%;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .contain {
+      width: 400px;
+      height: 500px;
+      padding: 5px;
+      border: solid 5px ;
+      border-radius: 25px;
+      background-color: white;
+    }
+    .scrollable{
+      width: 100%;
+      height: 100%;
+      overflow-y: scroll;
+    }
+    .item{
+      display: flex;
+      flex-direction: column;
+      background-color:black;
+      border: solid 1px black;
+      border-radius: 15px;
+      padding: 5px;
+      margin-top: 2px;
+      font-size: 1rem;
+      color: white;
+    }
+    .pagenumber{
+      position: absolute;
+      font-size: 2.5em;
+      top:100px;
+      left: 400px;
+      border: 2px solid black;
+      padding:5px;
+    }
+    .title{
+      position: absolute;
+      font-size: 2.5em;
+      top:10px;
+      left: 620px;
+    }
+  
+  </style>
+</head>
+<body>
+  
+  <div class="main">
+    <div class="title">
+      <span > PAGINATION </span>
+    </div>
+    <div class="pagenumber">
+      <span style="color:rgb(75, 42, 165);">Page: </span>
+      <span class="page_app" style="color:blue; font-weight: bold;">0</span>
+    </div>
+    <div class="contain">
+      <div class="scrollable" id="scrollCon" >
+          <!-- <div class="item">
+            <div>✈️ Plane </div>
+            <div>😃 Ravit</div>
+          </div> -->
+      </div>
+    </div>  
+  </div>
+  
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+  
+  //global var
+  let loading = false;
+  var scroller = document.querySelector('.scrollable');
+  let curent_page = 0;
+  let num_data = 10;
+
+  let page = 0;
+
+  //set default
+  getData(curent_page,num_data);
+  
+  $(".scrollable").on('scroll',function(){
+    
+    const clientHeight = scroller.clientHeight;
+    const scrollheight = scroller.scrollHeight;
+    const scrollTop = scroller.scrollTop;
+
+    // console.log('client', clientHeight, ', height', scrollheight, ', Top', scrollTop);
+    var r1 = clientHeight + scrollTop+200;
+    
+    if(r1>=scrollheight && !loading){
+        console.log("Load more...");
+        loadData();
+        loading = true;
+    }
+
+    if (clientHeight + scrollTop > (538 * (page + 1)) + 400) {
+      page++;
+      $('.page_app').html(page);
+      console.log(page)
+    } else if (clientHeight + scrollTop <= (538 * (page) + 400)){
+        page--;
+        $('.page_app').html(page);
+        console.log(page)
+    }
+
+  })
+
+  const fetch = ()=>{
+    return new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve(true);
+      },3000);
+    })
+  }
+
+  const loadData = ()=>{
+    console.log("Loading...");
+    fetch().then(()=>{
+        console.log("done...");
+        loading=false;
+        getData(curent_page,num_data);
+        curent_page++;
+    })
+  }
+ 
+  function getData(page,size){
+    $.get(`https://api.instantwebtools.net/v1/passenger?page=${page}&size=${size}`, async function (data) {
+      await console.log(data.data);
+      var temp = "";
+        for(var i in data.data){
+          temp +=  '<div class="item">'+
+                    '<div>✈️ '+data.data[i].airline[0].name+' - '+data.data[i].airline[0].country+'</div>'+
+                    '<div>😃 '+data.data[i].name+'</div>'+
+                  '</div>';
+        }
+        temp += "<hr>";
+      $(".scrollable").append(temp);
+
+    });
+  }
+  
+    
+})
+</script>
+</body>
+</html>

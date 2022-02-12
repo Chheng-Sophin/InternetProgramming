@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "icon" href = "https://cdn.emojidex.com/emoji/seal/airplane.png?1499688727" 
+        type = "image/x-icon">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>Pagination and localStorage</title>
+  <style>
+    .main{
+      width: 100%;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .contain {
+      width: 400px;
+      height: 500px;
+      padding: 5px;
+      border: solid 5px ;
+      border-radius: 25px;
+      background-color: white;
+    }
+    .scrollable{
+      width: 100%;
+      height: 100%;
+      overflow-y: scroll;
+    }
+    .item{
+      display: flex;
+      flex-direction: column;
+      background-color:black;
+      border: solid 1px black;
+      border-radius: 15px;
+      padding: 5px;
+      margin-top: 2px;
+      font-size: 1rem;
+      color: white;
+    }
+    .pagenumber{
+      position: absolute;
+      font-size: 2.5em;
+      top:100px;
+      left: 400px;
+      border: 2px solid black;
+      padding:5px;
+    }
+    .title{
+      position: absolute;
+      font-size: 2.5em;
+      top:10px;
+      left: 580px;
+    }
+   .message{
+     width: 100%;
+     text-align: center;
+     font-size: 1.5em;
+   }
+  </style>
+</head>
+<body>
+  
+  <div class="main">
+    <div class="title">
+      <span > Pagination localStorage </span>
+    </div>
+    <div class="pagenumber">
+      <span style="color:rgb(75, 42, 165);">Page: </span>
+      <span class="page_app" style="color:blue;font-weight: bold;">0</span>
+    </div>
+    <div class="contain">
+      <div class="scrollable" id="scrollCon" >
+          <!-- <div class="item">
+            <div>✈️ Plane </div>
+            <div>😃 Ravit</div>
+          </div> -->
+      </div>
+    </div>  
+
+  </div>
+  <div class="message">
+    <span>GET DATA FROM:  </span>
+    <span class="getfrom" style="font-weight: bold;">API</span>
+  </div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+  
+  //global var
+  let loading = false;
+  var scroller = document.querySelector('.scrollable');
+  let curent_page = 0;
+  let num_data = 10;
+
+  let page = 0;
+
+  //set default
+  getNewData();
+  
+  $(".scrollable").on('scroll',function(){
+    
+    const clientHeight = scroller.clientHeight;
+    const scrollheight = scroller.scrollHeight;
+    const scrollTop = scroller.scrollTop;
+
+ 
+    // console.log('client', clientHeight, ', height', scrollheight, ', Top', scrollTop);
+    var r1 = clientHeight + scrollTop+200;
+    
+    if(r1>=scrollheight && !loading){
+        console.log("Load more...");
+        loadData();
+        loading = true;
+    }
+
+    if (clientHeight + scrollTop > (538 * (page + 1)) + 500) {
+      page++;
+      $('.page_app').html(page);
+      // console.log(page)
+    } else if (clientHeight + scrollTop <= (538 * (page) + 400)){
+        page--;
+        $('.page_app').html(page);
+        // console.log(page)
+    }
+
+  })
+
+  const fetch = ()=>{
+    return new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve(true);
+      },3000);
+    })
+  }
+
+  const loadData = ()=>{
+    let check=false;
+    console.log("Loading...");
+    fetch().then(()=>{
+        
+        loading=false;    
+        getNewData();
+        curent_page++;
+        console.log("done...");
+    })
+  }
+
+  async function getNewData(){
+    
+    var temp = "";
+    var pageData=[];
+    const page = localStorage.getItem("page");
+    if(page){
+       pageData = JSON.parse(page);
+       
+       if(pageData.length<=0){
+        //  console.log("lenght<=0");
+        //  console.log("pagedata",pageData);
+
+          var defaultData = [{}];
+          localStorage.setItem('page',JSON.stringify(defaultData)); 
+          // console.log("get from API");
+          $('.getfrom').html("API");
+          getData(curent_page,num_data,false);
+       }else{
+        // console.log("lenght>=0");
+        
+          if(pageData.length>curent_page){
+            console.log("get from LOCALSTORAGE");
+            $('.getfrom').html("LOCALSTORAGE");
+            var Data = pageData[curent_page].data;
+         
+            for(var i in Data){
+              temp +=  '<div class="item">'+
+                        '<div>✈️ '+Data[i].airlineName+' - '+Data[i].airlineCountry+'</div>'+
+                        '<div>😃 '+Data[i].name+'</div>'+
+                      '</div>';
+            }
+            temp+='<hr>';
+          $(".scrollable").append(temp);
+          }else{
+            console.log("get from API");
+            $('.getfrom').html("API");
+            getData(curent_page,num_data,false);
+          }
+       }
+       
+    }else {
+      console.log("get from API");
+      $('.getfrom').html("API");
+      getData(curent_page,num_data,true);
+    }
+
+  }
+
+ 
+  function getData(page,size,first){
+    $.get(`https://api.instantwebtools.net/v1/passenger?page=${page}&size=${size}`, async function (data) {
+      await console.log(data.data);
+      var temp = "";
+      
+        //store   
+        var Newdata = []; 
+
+        for(var i in data.data){
+          
+          Newdata.push({"airlineName":data.data[i].airline[0].name,'airlineCountry':data.data[i].airline[0].country,'name':data.data[i].name});
+      
+          temp +=  '<div class="item">'+
+                    '<div>✈️ '+data.data[i].airline[0].name+' - '+data.data[i].airline[0].country+'</div>'+
+                    '<div>😃 '+data.data[i].name+'</div>'+
+                  '</div>';
+        }
+        temp += "<hr>";
+        
+        
+        
+          if(first){
+            var firstData=[{'pageNum':curent_page,'data':Newdata}];
+            localStorage.setItem('page',JSON.stringify(firstData));
+          }else{
+            var oldpage = JSON.parse(localStorage.getItem("page"));
+            oldpage.push({'pageNum':curent_page,'data':Newdata});
+            localStorage.setItem('page',JSON.stringify(oldpage)); 
+          }
+              
+       
+        
+      $(".scrollable").append(temp);
+    });
+  }
+  
+    
+})
+</script>
+</body>
+</html>
